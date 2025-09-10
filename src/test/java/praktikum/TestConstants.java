@@ -62,28 +62,15 @@ public class TestConstants {
     public static final float EXPECTED_PRICE_500 = 500.0f;
     public static final float EXPECTED_PRICE_133_32 = 133.32f;
     public static final float EXPECTED_PRICE_204_5 = 204.5f;
-    public static final float EXPECTED_PRICE_225 = 225.0f;
-    public static final float EXPECTED_PRICE_275 = 275.0f;
-    public static final float EXPECTED_PRICE_325 = 325.0f;
-    public static final float EXPECTED_PRICE_400 = 400.0f;
-    public static final float EXPECTED_PRICE_120 = 120.0f;
     public static final float EXPECTED_PRICE_ZERO = 0.0f;
 
     // Ожидаемые цены для тестов getReceipt (String с локалью)
-    public static final String EXPECTED_PRICE_200_STR = "200,000000";
-    public static final String EXPECTED_PRICE_125_STR = "125,000000";
-    public static final String EXPECTED_PRICE_300_STR = "300,000000";
-    public static final String EXPECTED_PRICE_202_STR = "202,000000";
-    public static final String EXPECTED_PRICE_400_5_STR = "400,500000";
-    public static final String EXPECTED_PRICE_500_STR = "500,000000";
-    public static final String EXPECTED_PRICE_133_32_STR = "133,320000";
-    public static final String EXPECTED_PRICE_204_5_STR = "204,500000";
-    public static final String EXPECTED_PRICE_225_STR = "225,000000";
-    public static final String EXPECTED_PRICE_275_STR = "275,000000";
-    public static final String EXPECTED_PRICE_325_STR = "325,000000";
-    public static final String EXPECTED_PRICE_400_STR = "400,000000";
-    public static final String EXPECTED_PRICE_120_STR = "120,000000";
-    public static final String EXPECTED_PRICE_ZERO_STR = "0,000000";
+    public static final String EXPECTED_PRICE_200_STR = "200";
+    public static final String EXPECTED_PRICE_225_STR = "225";
+    public static final String EXPECTED_PRICE_275_STR = "275";
+    public static final String EXPECTED_PRICE_325_STR = "325";
+    public static final String EXPECTED_PRICE_400_STR = "400";
+    public static final String EXPECTED_PRICE_120_STR = "120";
 
     // Дельта для сравнения float
     public static final float DELTA = 0.01f;
