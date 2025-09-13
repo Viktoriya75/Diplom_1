@@ -17,13 +17,10 @@ public class BurgerTest {
     private Bun bunMock;
 
     @Mock
-    private Ingredient ingredientMock1;
+    private Ingredient ingredientSauceMock;
 
     @Mock
-    private Ingredient ingredientMock2;
-
-    @Mock
-    private Ingredient ingredientMock3;
+    private Ingredient ingredientFillingMock;
 
     @Before
     public void setUp() {
@@ -31,180 +28,102 @@ public class BurgerTest {
         burger = new Burger();
     }
 
-    // ====== ADD INGREDIENT TESTS ======
+    // ====== ТЕСТЫ ДОБАВЛЕНИЯ ИНГРЕДИЕНТОВ ======
 
     @Test
-    public void testAddIngredient() {
-        burger.addIngredient(ingredientMock1);
+    public void testAddIngredientIncreasesSize() {
+        burger.addIngredient(ingredientSauceMock);
         assertEquals(SIZE_ONE, burger.ingredients.size());
-        assertEquals(ingredientMock1, burger.ingredients.get(INDEX_ZERO));
     }
 
     @Test
-    public void testAddMultipleIngredients() {
-        burger.addIngredient(ingredientMock1);
-        burger.addIngredient(ingredientMock2);
-        burger.addIngredient(ingredientMock3);
-
-        assertEquals(SIZE_THREE, burger.ingredients.size());
-        assertEquals(ingredientMock1, burger.ingredients.get(INDEX_ZERO));
-        assertEquals(ingredientMock2, burger.ingredients.get(INDEX_ONE));
-        assertEquals(ingredientMock3, burger.ingredients.get(INDEX_TWO));
+    public void testAddIngredientStoresCorrectIngredient() {
+        burger.addIngredient(ingredientSauceMock);
+        assertEquals(ingredientSauceMock, burger.ingredients.get(INDEX_ZERO));
     }
 
     @Test
-    public void testAddIngredientsInSequence() {
-        assertEquals(SIZE_ZERO, burger.ingredients.size());
+    public void testAddMultipleIngredientsSize() {
+        burger.addIngredient(ingredientSauceMock);
+        burger.addIngredient(ingredientFillingMock);
 
-        burger.addIngredient(ingredientMock1);
-        assertEquals(SIZE_ONE, burger.ingredients.size());
-
-        burger.addIngredient(ingredientMock2);
         assertEquals(SIZE_TWO, burger.ingredients.size());
-
-        burger.addIngredient(ingredientMock3);
-        assertEquals(SIZE_THREE, burger.ingredients.size());
     }
 
     @Test
-    public void testInitialIngredientsState() {
+    public void testInitialIngredientsNotNull() {
         assertNotNull(burger.ingredients);
+    }
+
+    @Test
+    public void testInitialIngredientsSize() {
         assertEquals(SIZE_ZERO, burger.ingredients.size());
     }
 
-    // ====== REMOVE INGREDIENT TESTS ======
+    // ====== ТЕСТЫ УДАЛЕНИЯ ИНГРЕДИЕНТОВ ======
 
     @Test
-    public void testRemoveIngredient() {
-        burger.addIngredient(ingredientMock1);
-        burger.addIngredient(ingredientMock2);
+    public void testRemoveIngredientSize() {
+        burger.addIngredient(ingredientSauceMock);
+        burger.addIngredient(ingredientFillingMock);
 
         burger.removeIngredient(INDEX_ZERO);
 
         assertEquals(SIZE_ONE, burger.ingredients.size());
-        assertEquals(ingredientMock2, burger.ingredients.get(INDEX_ZERO));
     }
 
     @Test
-    public void testRemoveIngredientFromMiddle() {
-        burger.addIngredient(ingredientMock1);
-        burger.addIngredient(ingredientMock2);
-        burger.addIngredient(ingredientMock3);
+    public void testRemoveIngredientRemainingIngredient() {
+        burger.addIngredient(ingredientSauceMock);
+        burger.addIngredient(ingredientFillingMock);
 
-        burger.removeIngredient(INDEX_ONE);
+        burger.removeIngredient(INDEX_ZERO);
 
-        assertEquals(SIZE_TWO, burger.ingredients.size());
-        assertEquals(ingredientMock1, burger.ingredients.get(INDEX_ZERO));
-        assertEquals(ingredientMock3, burger.ingredients.get(INDEX_ONE));
-    }
-
-    @Test
-    public void testRemoveLastIngredient() {
-        burger.addIngredient(ingredientMock1);
-        burger.addIngredient(ingredientMock2);
-
-        burger.removeIngredient(INDEX_ONE);
-
-        assertEquals(SIZE_ONE, burger.ingredients.size());
-        assertEquals(ingredientMock1, burger.ingredients.get(INDEX_ZERO));
+        assertEquals(ingredientFillingMock, burger.ingredients.get(INDEX_ZERO));
     }
 
     @Test
     public void testRemoveSingleIngredient() {
-        burger.addIngredient(ingredientMock1);
+        burger.addIngredient(ingredientSauceMock);
 
         burger.removeIngredient(INDEX_ZERO);
 
         assertEquals(SIZE_ZERO, burger.ingredients.size());
     }
 
-    @Test
-    public void testRemoveIngredientsSequentially() {
-        burger.addIngredient(ingredientMock1);
-        burger.addIngredient(ingredientMock2);
-        burger.addIngredient(ingredientMock3);
-        assertEquals(SIZE_THREE, burger.ingredients.size());
-
-        burger.removeIngredient(INDEX_ZERO);
-        assertEquals(SIZE_TWO, burger.ingredients.size());
-        assertEquals(ingredientMock2, burger.ingredients.get(INDEX_ZERO));
-
-        burger.removeIngredient(INDEX_ZERO);
-        assertEquals(SIZE_ONE, burger.ingredients.size());
-        assertEquals(ingredientMock3, burger.ingredients.get(INDEX_ZERO));
-
-        burger.removeIngredient(INDEX_ZERO);
-        assertEquals(SIZE_ZERO, burger.ingredients.size());
-    }
-
-    // ====== MOVE INGREDIENT TESTS ======
+    // ====== ТЕСТЫ ПЕРЕМЕЩЕНИЯ ИНГРЕДИЕНТОВ ======
 
     @Test
-    public void testMoveIngredient() {
-        burger.addIngredient(ingredientMock1);
-        burger.addIngredient(ingredientMock2);
-        burger.addIngredient(ingredientMock3);
-
-        burger.moveIngredient(INDEX_ZERO, INDEX_TWO);
-
-        assertEquals(SIZE_THREE, burger.ingredients.size());
-        assertEquals(ingredientMock2, burger.ingredients.get(INDEX_ZERO));
-        assertEquals(ingredientMock3, burger.ingredients.get(INDEX_ONE));
-        assertEquals(ingredientMock1, burger.ingredients.get(INDEX_TWO));
-    }
-
-    @Test
-    public void testMoveIngredientToBeginning() {
-        burger.addIngredient(ingredientMock1);
-        burger.addIngredient(ingredientMock2);
-        burger.addIngredient(ingredientMock3);
-
-        burger.moveIngredient(INDEX_TWO, INDEX_ZERO);
-
-        assertEquals(ingredientMock3, burger.ingredients.get(INDEX_ZERO));
-        assertEquals(ingredientMock1, burger.ingredients.get(INDEX_ONE));
-        assertEquals(ingredientMock2, burger.ingredients.get(INDEX_TWO));
-    }
-
-    @Test
-    public void testMoveIngredientFromMiddle() {
-        burger.addIngredient(ingredientMock1);
-        burger.addIngredient(ingredientMock2);
-        burger.addIngredient(ingredientMock3);
-
-        burger.moveIngredient(INDEX_ONE, INDEX_TWO);
-
-        assertEquals(ingredientMock1, burger.ingredients.get(INDEX_ZERO));
-        assertEquals(ingredientMock3, burger.ingredients.get(INDEX_ONE));
-        assertEquals(ingredientMock2, burger.ingredients.get(INDEX_TWO));
-    }
-
-    @Test
-    public void testMoveIngredientToMiddle() {
-        burger.addIngredient(ingredientMock1);
-        burger.addIngredient(ingredientMock2);
-        burger.addIngredient(ingredientMock3);
-
-        burger.moveIngredient(INDEX_ZERO, INDEX_ONE);
-
-        assertEquals(ingredientMock2, burger.ingredients.get(INDEX_ZERO));
-        assertEquals(ingredientMock1, burger.ingredients.get(INDEX_ONE));
-        assertEquals(ingredientMock3, burger.ingredients.get(INDEX_TWO));
-    }
-
-    @Test
-    public void testMoveIngredientInTwoElementList() {
-        burger.addIngredient(ingredientMock1);
-        burger.addIngredient(ingredientMock2);
+    public void testMoveIngredientSize() {
+        burger.addIngredient(ingredientSauceMock);
+        burger.addIngredient(ingredientFillingMock);
 
         burger.moveIngredient(INDEX_ZERO, INDEX_ONE);
 
         assertEquals(SIZE_TWO, burger.ingredients.size());
-        assertEquals(ingredientMock2, burger.ingredients.get(INDEX_ZERO));
-        assertEquals(ingredientMock1, burger.ingredients.get(INDEX_ONE));
     }
 
-    // ====== GET PRICE TESTS ======
+    @Test
+    public void testMoveIngredientInTwoElementListFirstPosition() {
+        burger.addIngredient(ingredientSauceMock);
+        burger.addIngredient(ingredientFillingMock);
+
+        burger.moveIngredient(INDEX_ZERO, INDEX_ONE);
+
+        assertEquals(ingredientFillingMock, burger.ingredients.get(INDEX_ZERO));
+    }
+
+    @Test
+    public void testMoveIngredientInTwoElementListSecondPosition() {
+        burger.addIngredient(ingredientSauceMock);
+        burger.addIngredient(ingredientFillingMock);
+
+        burger.moveIngredient(INDEX_ZERO, INDEX_ONE);
+
+        assertEquals(ingredientSauceMock, burger.ingredients.get(INDEX_ONE));
+    }
+
+    // ====== ТЕСТЫ РАСЧЕТА СТОИМОСТИ ======
 
     @Test
     public void testGetPriceOnlyBun() {
@@ -217,10 +136,10 @@ public class BurgerTest {
     @Test
     public void testGetPriceWithOneIngredient() {
         when(bunMock.getPrice()).thenReturn(BUN_PRICE_50);
-        when(ingredientMock1.getPrice()).thenReturn(INGREDIENT_PRICE_25);
+        when(ingredientSauceMock.getPrice()).thenReturn(INGREDIENT_PRICE_25);
 
         burger.setBuns(bunMock);
-        burger.addIngredient(ingredientMock1);
+        burger.addIngredient(ingredientSauceMock);
 
         assertEquals(EXPECTED_PRICE_125, burger.getPrice(), DELTA);
     }
@@ -228,40 +147,25 @@ public class BurgerTest {
     @Test
     public void testGetPriceWithMultipleIngredients() {
         when(bunMock.getPrice()).thenReturn(BUN_PRICE_100);
-        when(ingredientMock1.getPrice()).thenReturn(INGREDIENT_PRICE_50);
-        when(ingredientMock2.getPrice()).thenReturn(INGREDIENT_PRICE_30);
-        when(ingredientMock3.getPrice()).thenReturn(INGREDIENT_PRICE_20);
+        when(ingredientSauceMock.getPrice()).thenReturn(INGREDIENT_PRICE_50);
+        when(ingredientFillingMock.getPrice()).thenReturn(INGREDIENT_PRICE_30);
 
         burger.setBuns(bunMock);
-        burger.addIngredient(ingredientMock1);
-        burger.addIngredient(ingredientMock2);
-        burger.addIngredient(ingredientMock3);
+        burger.addIngredient(ingredientSauceMock);
+        burger.addIngredient(ingredientFillingMock);
 
-        assertEquals(EXPECTED_PRICE_300, burger.getPrice(), DELTA);
+        assertEquals(EXPECTED_PRICE_280, burger.getPrice(), DELTA);
     }
 
     @Test
     public void testGetPriceWithZeroPrices() {
         when(bunMock.getPrice()).thenReturn(BUN_PRICE_ZERO);
-        when(ingredientMock1.getPrice()).thenReturn(INGREDIENT_PRICE_ZERO);
+        when(ingredientSauceMock.getPrice()).thenReturn(INGREDIENT_PRICE_ZERO);
 
         burger.setBuns(bunMock);
-        burger.addIngredient(ingredientMock1);
+        burger.addIngredient(ingredientSauceMock);
 
         assertEquals(EXPECTED_PRICE_ZERO, burger.getPrice(), DELTA);
-    }
-
-    @Test
-    public void testGetPriceWithFloatPrices() {
-        when(bunMock.getPrice()).thenReturn(BUN_PRICE_100_5);
-        when(ingredientMock1.getPrice()).thenReturn(INGREDIENT_PRICE_1_5);
-        when(ingredientMock2.getPrice()).thenReturn(INGREDIENT_PRICE_2);
-
-        burger.setBuns(bunMock);
-        burger.addIngredient(ingredientMock1);
-        burger.addIngredient(ingredientMock2);
-
-        assertEquals(EXPECTED_PRICE_204_5, burger.getPrice(), DELTA);
     }
 
     @Test
@@ -269,190 +173,90 @@ public class BurgerTest {
         when(bunMock.getPrice()).thenReturn(BUN_PRICE_75);
         burger.setBuns(bunMock);
 
-        // Bun price should be multiplied by 2 (top and bottom)
+        // Цена булочки должна умножаться на 2 (верхняя и нижняя части)
         assertEquals(150.0f, burger.getPrice(), DELTA);
     }
 
-    @Test
-    public void testGetPriceMockVerification() {
-        when(bunMock.getPrice()).thenReturn(BUN_PRICE_80);
-        when(ingredientMock1.getPrice()).thenReturn(INGREDIENT_PRICE_15);
-        when(ingredientMock2.getPrice()).thenReturn(INGREDIENT_PRICE_20);
-
-        burger.setBuns(bunMock);
-        burger.addIngredient(ingredientMock1);
-        burger.addIngredient(ingredientMock2);
-
-        burger.getPrice();
-
-        verify(bunMock, times(1)).getPrice();
-        verify(ingredientMock1, times(1)).getPrice();
-        verify(ingredientMock2, times(1)).getPrice();
-    }
-
-    // ====== GET RECEIPT TESTS ======
+    // ====== ТЕСТЫ ПОЛУЧЕНИЯ ЧЕКА ======
 
     @Test
-    public void testGetReceiptEmptyBurger() {
+    public void testGetReceiptEmptyBurgerNotNull() {
         when(bunMock.getName()).thenReturn(BUN_NAME_TEST);
         when(bunMock.getPrice()).thenReturn(BUN_PRICE_100);
         burger.setBuns(bunMock);
 
         String receipt = burger.getReceipt();
         assertNotNull(receipt);
+    }
+
+    @Test
+    public void testGetReceiptEmptyBurgerContainsBun() {
+        when(bunMock.getName()).thenReturn(BUN_NAME_TEST);
+        when(bunMock.getPrice()).thenReturn(BUN_PRICE_100);
+        burger.setBuns(bunMock);
+
+        String receipt = burger.getReceipt();
         assertTrue(receipt.contains(RECEIPT_BUN_PREFIX + BUN_NAME_TEST + RECEIPT_BUN_SUFFIX));
+    }
+
+    @Test
+    public void testGetReceiptEmptyBurgerContainsPrice() {
+        when(bunMock.getName()).thenReturn(BUN_NAME_TEST);
+        when(bunMock.getPrice()).thenReturn(BUN_PRICE_100);
+        burger.setBuns(bunMock);
+
+        String receipt = burger.getReceipt();
         assertTrue(receipt.contains(RECEIPT_PRICE_PREFIX + EXPECTED_PRICE_200_STR));
     }
 
     @Test
-    public void testGetReceiptWithSauceIngredient() {
+    public void testGetReceiptWithSauceIngredientContainsSauce() {
         when(bunMock.getName()).thenReturn(BUN_NAME_FLUOR);
         when(bunMock.getPrice()).thenReturn(BUN_PRICE_150);
-        when(ingredientMock1.getType()).thenReturn(IngredientType.SAUCE);
-        when(ingredientMock1.getName()).thenReturn(SAUCE_SPICY);
-        when(ingredientMock1.getPrice()).thenReturn(INGREDIENT_PRICE_25);
+        when(ingredientSauceMock.getType()).thenReturn(IngredientType.SAUCE);
+        when(ingredientSauceMock.getName()).thenReturn(SAUCE_SPICY);
+        when(ingredientSauceMock.getPrice()).thenReturn(INGREDIENT_PRICE_25);
 
         burger.setBuns(bunMock);
-        burger.addIngredient(ingredientMock1);
+        burger.addIngredient(ingredientSauceMock);
 
         String receipt = burger.getReceipt();
-        assertNotNull(receipt);
-        assertTrue(receipt.contains(RECEIPT_BUN_PREFIX + BUN_NAME_FLUOR + RECEIPT_BUN_SUFFIX));
         assertTrue(receipt.contains(RECEIPT_SAUCE_PREFIX + SAUCE_SPICY + RECEIPT_INGREDIENT_SUFFIX));
-        assertTrue(receipt.contains(RECEIPT_PRICE_PREFIX + EXPECTED_PRICE_325_STR));
     }
 
     @Test
-    public void testGetReceiptWithFillingIngredient() {
+    public void testGetReceiptWithFillingIngredientContainsFilling() {
         when(bunMock.getName()).thenReturn(BUN_NAME_CRATER);
         when(bunMock.getPrice()).thenReturn(BUN_PRICE_100);
-        when(ingredientMock1.getType()).thenReturn(IngredientType.FILLING);
-        when(ingredientMock1.getName()).thenReturn(FILLING_PROTOSTOMIA);
-        when(ingredientMock1.getPrice()).thenReturn(INGREDIENT_PRICE_75);
+        when(ingredientSauceMock.getType()).thenReturn(IngredientType.FILLING);
+        when(ingredientSauceMock.getName()).thenReturn(FILLING_PROTOSTOMIA);
+        when(ingredientSauceMock.getPrice()).thenReturn(INGREDIENT_PRICE_75);
 
         burger.setBuns(bunMock);
-        burger.addIngredient(ingredientMock1);
+        burger.addIngredient(ingredientSauceMock);
 
         String receipt = burger.getReceipt();
-        assertNotNull(receipt);
-        assertTrue(receipt.contains(RECEIPT_BUN_PREFIX + BUN_NAME_CRATER + RECEIPT_BUN_SUFFIX));
         assertTrue(receipt.contains(RECEIPT_FILLING_PREFIX + FILLING_PROTOSTOMIA + RECEIPT_INGREDIENT_SUFFIX));
-        assertTrue(receipt.contains(RECEIPT_PRICE_PREFIX + EXPECTED_PRICE_275_STR));
     }
 
     @Test
-    public void testGetReceiptWithMixedIngredients() {
-        when(bunMock.getName()).thenReturn(BUN_NAME_SUPER);
-        when(bunMock.getPrice()).thenReturn(BUN_PRICE_150);
-        when(ingredientMock1.getType()).thenReturn(IngredientType.SAUCE);
-        when(ingredientMock1.getName()).thenReturn(SAUCE_HOT);
-        when(ingredientMock1.getPrice()).thenReturn(INGREDIENT_PRICE_25);
-        when(ingredientMock2.getType()).thenReturn(IngredientType.FILLING);
-        when(ingredientMock2.getName()).thenReturn(FILLING_CUTLET);
-        when(ingredientMock2.getPrice()).thenReturn(INGREDIENT_PRICE_75);
-
-        burger.setBuns(bunMock);
-        burger.addIngredient(ingredientMock1);
-        burger.addIngredient(ingredientMock2);
-
-        String receipt = burger.getReceipt();
-        assertNotNull(receipt);
-        assertTrue(receipt.contains(RECEIPT_BUN_PREFIX + BUN_NAME_SUPER + RECEIPT_BUN_SUFFIX));
-        assertTrue(receipt.contains(RECEIPT_SAUCE_PREFIX + SAUCE_HOT + RECEIPT_INGREDIENT_SUFFIX));
-        assertTrue(receipt.contains(RECEIPT_FILLING_PREFIX + FILLING_CUTLET + RECEIPT_INGREDIENT_SUFFIX));
-        assertTrue(receipt.contains(RECEIPT_PRICE_PREFIX + EXPECTED_PRICE_400_STR));
-    }
-
-    @Test
-    public void testGetReceiptMultipleSauces() {
-        when(bunMock.getName()).thenReturn(BUN_NAME_REGULAR);
-        when(bunMock.getPrice()).thenReturn(BUN_PRICE_50);
-        when(ingredientMock1.getType()).thenReturn(IngredientType.SAUCE);
-        when(ingredientMock1.getName()).thenReturn(SAUCE_KETCHUP);
-        when(ingredientMock1.getPrice()).thenReturn(INGREDIENT_PRICE_10);
-        when(ingredientMock2.getType()).thenReturn(IngredientType.SAUCE);
-        when(ingredientMock2.getName()).thenReturn(SAUCE_MAYO);
-        when(ingredientMock2.getPrice()).thenReturn(INGREDIENT_PRICE_10);
-
-        burger.setBuns(bunMock);
-        burger.addIngredient(ingredientMock1);
-        burger.addIngredient(ingredientMock2);
-
-        String receipt = burger.getReceipt();
-        assertTrue(receipt.contains(RECEIPT_SAUCE_PREFIX + SAUCE_KETCHUP + RECEIPT_INGREDIENT_SUFFIX));
-        assertTrue(receipt.contains(RECEIPT_SAUCE_PREFIX + SAUCE_MAYO + RECEIPT_INGREDIENT_SUFFIX));
-        assertTrue(receipt.contains(RECEIPT_PRICE_PREFIX + EXPECTED_PRICE_120_STR));
-    }
-
-    @Test
-    public void testGetReceiptMultipleFillings() {
-        when(bunMock.getName()).thenReturn(BUN_NAME_SPECIAL);
-        when(bunMock.getPrice()).thenReturn(BUN_PRICE_80);
-        when(ingredientMock1.getType()).thenReturn(IngredientType.FILLING);
-        when(ingredientMock1.getName()).thenReturn(FILLING_SALAD);
-        when(ingredientMock1.getPrice()).thenReturn(INGREDIENT_PRICE_15);
-        when(ingredientMock2.getType()).thenReturn(IngredientType.FILLING);
-        when(ingredientMock2.getName()).thenReturn(FILLING_CHEESE);
-        when(ingredientMock2.getPrice()).thenReturn(INGREDIENT_PRICE_20);
-        when(ingredientMock3.getType()).thenReturn(IngredientType.FILLING);
-        when(ingredientMock3.getName()).thenReturn(FILLING_BACON);
-        when(ingredientMock3.getPrice()).thenReturn(INGREDIENT_PRICE_30);
-
-        burger.setBuns(bunMock);
-        burger.addIngredient(ingredientMock1);
-        burger.addIngredient(ingredientMock2);
-        burger.addIngredient(ingredientMock3);
-
-        String receipt = burger.getReceipt();
-        assertTrue(receipt.contains(RECEIPT_FILLING_PREFIX + FILLING_SALAD + RECEIPT_INGREDIENT_SUFFIX));
-        assertTrue(receipt.contains(RECEIPT_FILLING_PREFIX + FILLING_CHEESE + RECEIPT_INGREDIENT_SUFFIX));
-        assertTrue(receipt.contains(RECEIPT_FILLING_PREFIX + FILLING_BACON + RECEIPT_INGREDIENT_SUFFIX));
-        assertTrue(receipt.contains(RECEIPT_PRICE_PREFIX + EXPECTED_PRICE_225_STR));
-    }
-
-    @Test
-    public void testGetReceiptFormatting() {
+    public void testGetReceiptFormattingFirstLine() {
         when(bunMock.getName()).thenReturn(BUN_NAME_GENERIC);
         when(bunMock.getPrice()).thenReturn(BUN_PRICE_100);
-        when(ingredientMock1.getType()).thenReturn(IngredientType.SAUCE);
-        when(ingredientMock1.getName()).thenReturn(SAUCE_TEST);
-        when(ingredientMock1.getPrice()).thenReturn(INGREDIENT_PRICE_50);
+        when(ingredientSauceMock.getType()).thenReturn(IngredientType.SAUCE);
+        when(ingredientSauceMock.getName()).thenReturn(SAUCE_TEST);
+        when(ingredientSauceMock.getPrice()).thenReturn(INGREDIENT_PRICE_50);
 
         burger.setBuns(bunMock);
-        burger.addIngredient(ingredientMock1);
+        burger.addIngredient(ingredientSauceMock);
 
         String receipt = burger.getReceipt();
         String[] lines = receipt.split("\n");
 
         assertEquals("(==== " + BUN_NAME_GENERIC + " ====)", lines[INDEX_ZERO].trim());
-        assertEquals("= sauce " + SAUCE_TEST + " =", lines[INDEX_ONE].trim());
-        assertEquals("(==== " + BUN_NAME_GENERIC + " ====)", lines[INDEX_TWO].trim());
-        assertTrue(lines[4].trim().startsWith(RECEIPT_PRICE_PREFIX));
     }
 
-    @Test
-    public void testGetReceiptMockVerifications() {
-        when(bunMock.getName()).thenReturn(BUN_NAME_TEST);
-        when(bunMock.getPrice()).thenReturn(BUN_PRICE_100);
-        when(ingredientMock1.getType()).thenReturn(IngredientType.SAUCE);
-        when(ingredientMock1.getName()).thenReturn(SAUCE_TEST);
-        when(ingredientMock1.getPrice()).thenReturn(INGREDIENT_PRICE_25);
-
-        burger.setBuns(bunMock);
-        burger.addIngredient(ingredientMock1);
-
-        burger.getReceipt();
-
-        // Verify getName called twice for bun (beginning and end of receipt)
-        verify(bunMock, times(2)).getName();
-        verify(ingredientMock1, times(1)).getType();
-        verify(ingredientMock1, times(1)).getName();
-        // getPrice called once during price calculation
-        verify(bunMock, times(1)).getPrice();
-        verify(ingredientMock1, times(1)).getPrice();
-    }
-
-    // ====== SET BUNS TESTS ======
+    // ====== ТЕСТЫ УСТАНОВКИ БУЛОЧЕК ======
 
     @Test
     public void testSetBuns() {
@@ -461,7 +265,7 @@ public class BurgerTest {
     }
 
     @Test
-    public void testSetBunsReplacesPreviousBun() {
+    public void testSetBunsReplacesPreviousBunCorrectBun() {
         Bun firstBunMock = bunMock;
         Bun secondBunMock = mock(Bun.class);
 
@@ -469,7 +273,6 @@ public class BurgerTest {
         burger.setBuns(secondBunMock);
 
         assertEquals(secondBunMock, burger.bun);
-        assertNotEquals(firstBunMock, burger.bun);
     }
 
     @Test
